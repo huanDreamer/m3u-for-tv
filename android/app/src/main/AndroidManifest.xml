@@ -3,6 +3,8 @@
         android:label="untitled"
         android:name="${applicationName}"
         android:usesCleartextTraffic="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
