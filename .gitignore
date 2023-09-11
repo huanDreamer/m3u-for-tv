@@ -1,0 +1,84 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+
+# 忽略生成的构建文件和目录
+build/
+pubspec.lock
+
+# 忽略iOS的构建目录
+ios/Pods/
+ios/Flutter/.symlinks/
+ios/Flutter/generated.xcconfig
+ios/Flutter/Flutter.framework/
+
+# 忽略Android的构建目录
+android/.gradle/
+android/app/build/
+android/app/outputs/
+android/build/
+android/gradle/
+android/gradlew
+android/gradlew.bat
+
+# 忽略VS Code配置
+.vscode/
+
+# 忽略macOS的构建目录
+macos/Flutter/Flutter.xcconfig
+macos/Flutter/Generated.xcconfig
+
+# 忽略macOS的构建目录
+web/packages/
+web/flutter_service_worker.js
+
+# 忽略Mac上的构建目录
+.build/
+
+# 忽略Windows上的构建目录
+.windows/
+
+# 忽略linux上的构建目录
+.linux/
