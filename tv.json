@@ -1,190 +1,5 @@
 [
     {
-        "group": "央视IPV6",
-        "children": [
-            {
-                "name": "CCTV1",
-                "logo": "https://epg.112114.eu.org/logo/CCTV1.png",
-                "url": "http://[2409:8087:2001:20:2800:0:df6e:eb26]/ott.mobaibox.com/PLTV/1/224/3221228213/index.m3u8"
-            },
-            {
-                "name": "CCTV2",
-                "logo": "https://epg.112114.eu.org/logo/CCTV2.png",
-                "url": "http://[2409:8087:7001:20:1000::95]:6610/000000001000/6000000001000014161/index.m3u8?channel-id=wasusyt&Contentid=6000000001000014161&livemode=1&stbId=3"
-            },
-            {
-                "name": "CCTV3",
-                "logo": "https://epg.112114.eu.org/logo/CCTV3.png",
-                "url": "http://[2409:8087:2001:20:2800:0:df6e:eb26]/ott.mobaibox.com/PLTV/1/224/3221228188/index.m3u8"
-            },
-            {
-                "name": "CCTV4",
-                "logo": "https://epg.112114.eu.org/logo/CCTV4.png",
-                "url": "http://[2409:8087:2001:20:2800:0:df6e:eb26]/ott.mobaibox.com/PLTV/1/224/3221228156/index.m3u8"
-            },
-            {
-                "name": "CCTV5",
-                "logo": "https://epg.112114.eu.org/logo/CCTV5.png",
-                "url": "http://[2409:8087:2001:20:2800:0:df6e:eb22]/ott.mobaibox.com/PLTV/4/224/3221228502/index.m3u8"
-            },
-            {
-                "name": "CCTV5+",
-                "logo": "https://epg.112114.eu.org/logo/CCTV5+.png",
-                "url": "http://[2409:8087:2001:20:2800:0:df6e:eb26]/ott.mobaibox.com/PLTV/1/224/3221228277/index.m3u8"
-            },
-            {
-                "name": "CCTV6",
-                "logo": "https://epg.112114.eu.org/logo/CCTV6.png",
-                "url": "http://[2409:8087:7001:20:1000::95]:6610/000000001000/6000000001000004574/index.m3u8?channel-id=wasusyt&Contentid=6000000001000004574&livemode=1&stbId=3"
-            },
-            {
-                "name": "CCTV7",
-                "logo": "https://epg.112114.eu.org/logo/CCTV7.png",
-                "url": "http://[2409:8087:7001:20:1000::95]:6610/000000001000/6000000001000009055/index.m3u8?channel-id=wasusyt&Contentid=6000000001000009055&livemode=1&stbId=3"
-            },
-            {
-                "name": "CCTV8",
-                "logo": "https://epg.112114.eu.org/logo/CCTV8.png",
-                "url": "http://[2409:8087:2001:20:2800:0:df6e:eb26]/ott.mobaibox.com/PLTV/1/224/3221228578/index.m3u8"
-            },
-            {
-                "name": "CCTV9",
-                "logo": "https://epg.112114.eu.org/logo/CCTV9.png",
-                "url": "http://[2409:8087:7001:20:1000::95]:6610/000000001000/6000000001000032162/index.m3u8?channel-id=wasusyt&Contentid=6000000001000032162&livemode=1&stbId=3"
-            },
-            {
-                "name": "CCTV10",
-                "logo": "https://epg.112114.eu.org/logo/CCTV10.png",
-                "url": "http://[2409:8087:7001:20:1000::95]:6610/000000001000/6000000001000031506/index.m3u8?channel-id=wasusyt&Contentid=6000000001000031506&livemode=1&stbId=3"
-            },
-            {
-                "name": "CCTV11",
-                "logo": "https://epg.112114.eu.org/logo/CCTV11.png",
-                "url": "http://[2409:8087:2001:20:2800:0:df6e:eb23]/ott.mobaibox.com/PLTV/4/224/3221228289/index.m3u8"
-            },
-            {
-                "name": "CCTV12",
-                "logo": "https://epg.112114.eu.org/logo/CCTV12.png",
-                "url": "http://[2409:8087:7001:20:1000::95]:6610/000000001000/6000000001000022586/index.m3u8?channel-id=wasusyt&Contentid=6000000001000022586&livemode=1&stbId=3"
-            },
-            {
-                "name": "CCTV13",
-                "logo": "https://epg.112114.eu.org/logo/CCTV13.png",
-                "url": "http://[2409:8087:2001:20:2800:0:df6e:eb24]/ott.mobaibox.com/PLTV/1/224/3221228324/index.m3u8"
-            },
-            {
-                "name": "CCTV14",
-                "logo": "https://epg.112114.eu.org/logo/CCTV14.png",
-                "url": "http://[2409:8087:2001:20:2800:0:df6e:eb22]/ott.mobaibox.com/PLTV/1/224/3221228292/index.m3u8"
-            },
-            {
-                "name": "CCTV15",
-                "logo": "https://epg.112114.eu.org/logo/CCTV15.png",
-                "url": "http://[2409:8087:2001:20:2800:0:df6e:eb22]/ott.mobaibox.com/PLTV/1/224/3221228404/index.m3u8"
-            },
-            {
-                "name": "CCTV16",
-                "logo": "https://epg.112114.eu.org/logo/CCTV16.png",
-                "url": "http://[2409:8087:2001:20:2800:0:df6e:eb18]/ott.mobaibox.com/PLTV/3/224/3221228127/index.m3u8"
-            },
-            {
-                "name": "CCTV17",
-                "logo": "https://epg.112114.eu.org/logo/CCTV17.png",
-                "url": "http://[2409:8087:2001:20:2800:0:df6e:eb22]/ott.mobaibox.com/PLTV/1/224/3221228407/index.m3u8"
-            }
-        ]
-    },
-    {
-        "group": "影视",
-        "children": [
-            {
-                "name": "HBO",
-                "logo": "https://epg.112114.eu.org/logo/HBO.png",
-                "url": "http://pull-l3-cny.douyincdn.com/third/stream-1279e1fd458348b32fd60381b1017c09.m3u8"
-            },
-            {
-                "name": "HBO",
-                "logo": "https://epg.112114.eu.org/logo/HBO.png",
-                "url": "http://pull-l3-cny.douyincdn.com/third/stream-9bfb4b08fec367ed3850357a853250d5.m3u8"
-            },
-            {
-                "name": "龙祥电影台",
-                "logo": "https://epg.112114.eu.org/logo/龙祥电影台.png",
-                "url": "http://pull-l3-cny.douyincdn.com/third/stream-c32278dece9f79334a2a878aaa730e95.m3u8"
-            },
-            {
-                "name": "CHC高清电影",
-                "logo": "https://epg.112114.eu.org/logo/CHC高清电影.png",
-                "url": "http://111.20.40.170/PLTV/88888893/224/3221226463/index.m3u8"
-            },
-            {
-                "name": "CHC家庭影院",
-                "logo": "https://epg.112114.eu.org/logo/CHC家庭影院.png",
-                "url": "http://111.20.40.170/PLTV/88888893/224/3221226462/index.m3u8"
-            },
-            {
-                "name": "CHC动作电影",
-                "logo": "https://epg.112114.eu.org/logo/CHC动作电影.png",
-                "url": "http://111.20.40.170/PLTV/88888893/224/3221226465/index.m3u8"
-            },
-            {
-                "name": "星城经典台",
-                "logo": "https://epg.112114.eu.org/logo/星城经典台.png",
-                "url": "https://dwz.mk/v6kgy"
-            },
-            {
-                "name": "星城功夫台",
-                "logo": "https://epg.112114.eu.org/logo/星城功夫台.png",
-                "url": "https://dwz.mk/mpd4e"
-            },
-            {
-                "name": "古龙影院",
-                "logo": "https://epg.112114.eu.org/logo/古龙影院.png",
-                "url": "http://maomao.kandiantv.cn/m3u8.php?/migu/639528313"
-            },
-            {
-                "name": "上视东方影视",
-                "logo": "https://epg.112114.eu.org/logo/上视东方影视.png",
-                "url": "http://maomao.kandiantv.cn/m3u8.php?/migu/617290047"
-            },
-            {
-                "name": "过瘾大片",
-                "logo": "https://epg.112114.eu.org/logo/过瘾大片.png",
-                "url": "http://maomao.kandiantv.cn/m3u8.php?/migu/627198610"
-            },
-            {
-                "name": "IPTV经典电影",
-                "logo": "https://epg.112114.eu.org/logo/IPTV经典电影.png",
-                "url": "http://maomao.kandiantv.cn/m3u8.php?/migu/625703337"
-            }
-        ]
-    },
-    {
-        "group": "央视-4K",
-        "children": [
-            {
-                "name": "CCTV8K",
-                "logo": "https://epg.112114.eu.org/logo/CCTV8K.png",
-                "url": "http://[2409:8087:2001:20:2800:0:df6e:eb02]:80/wh7f454c46tw2749731958_105918260/ott.mobaibox.com/PLTV/3/224/3221228165/index.m3u8?icpid=3&RTS=1681529690&from=40&popid=40&hms_devid=2039&prioritypopid=40&vqe=3"
-            },
-            {
-                "name": "CCTV1",
-                "logo": "https://epg.112114.eu.org/logo/CCTV1.png",
-                "url": "http://[2409:8087:2001:20:2800:0:df6e:eb02]/ott.mobaibox.com/PLTV/4/224/3221227896/index.m3u8"
-            },
-            {
-                "name": "CCTV1",
-                "logo": "https://epg.112114.eu.org/logo/CCTV1.png",
-                "url": "http://[2409:8087:2001:20:2800:0:df6e:eb03]/ott.mobaibox.com/PLTV/4/224/3221227896/index.m3u8"
-            },
-            {
-                "name": "CCTV5",
-                "logo": "https://epg.112114.eu.org/logo/CCTV5.png",
-                "url": "http://[2409:8087:2001:20:2800:0:df6e:eb22]/ott.mobaibox.com/PLTV/4/224/3221228502/index.m3u8"
-            }
-        ]
-    },
-    {
         "group": "卫视IPV6",
         "children": [
             {
@@ -331,6 +146,71 @@
                 "name": "五星体育",
                 "logo": "https://epg.112114.eu.org/logo/五星体育.png",
                 "url": "http://[2409:8087:1e03:21::2]:6060/cms001/ch00000090990000001018/index.m3u8"
+            }
+        ]
+    },
+    {
+        "group": "影视",
+        "children": [
+            {
+                "name": "HBO",
+                "logo": "https://epg.112114.eu.org/logo/HBO.png",
+                "url": "http://pull-l3-cny.douyincdn.com/third/stream-1279e1fd458348b32fd60381b1017c09.m3u8"
+            },
+            {
+                "name": "HBO",
+                "logo": "https://epg.112114.eu.org/logo/HBO.png",
+                "url": "http://pull-l3-cny.douyincdn.com/third/stream-9bfb4b08fec367ed3850357a853250d5.m3u8"
+            },
+            {
+                "name": "龙祥电影台",
+                "logo": "https://epg.112114.eu.org/logo/龙祥电影台.png",
+                "url": "http://pull-l3-cny.douyincdn.com/third/stream-c32278dece9f79334a2a878aaa730e95.m3u8"
+            },
+            {
+                "name": "CHC高清电影",
+                "logo": "https://epg.112114.eu.org/logo/CHC高清电影.png",
+                "url": "http://111.20.40.170/PLTV/88888893/224/3221226463/index.m3u8"
+            },
+            {
+                "name": "CHC家庭影院",
+                "logo": "https://epg.112114.eu.org/logo/CHC家庭影院.png",
+                "url": "http://111.20.40.170/PLTV/88888893/224/3221226462/index.m3u8"
+            },
+            {
+                "name": "CHC动作电影",
+                "logo": "https://epg.112114.eu.org/logo/CHC动作电影.png",
+                "url": "http://111.20.40.170/PLTV/88888893/224/3221226465/index.m3u8"
+            },
+            {
+                "name": "星城经典台",
+                "logo": "https://epg.112114.eu.org/logo/星城经典台.png",
+                "url": "https://dwz.mk/v6kgy"
+            },
+            {
+                "name": "星城功夫台",
+                "logo": "https://epg.112114.eu.org/logo/星城功夫台.png",
+                "url": "https://dwz.mk/mpd4e"
+            },
+            {
+                "name": "古龙影院",
+                "logo": "https://epg.112114.eu.org/logo/古龙影院.png",
+                "url": "http://maomao.kandiantv.cn/m3u8.php?/migu/639528313"
+            },
+            {
+                "name": "上视东方影视",
+                "logo": "https://epg.112114.eu.org/logo/上视东方影视.png",
+                "url": "http://maomao.kandiantv.cn/m3u8.php?/migu/617290047"
+            },
+            {
+                "name": "过瘾大片",
+                "logo": "https://epg.112114.eu.org/logo/过瘾大片.png",
+                "url": "http://maomao.kandiantv.cn/m3u8.php?/migu/627198610"
+            },
+            {
+                "name": "IPTV经典电影",
+                "logo": "https://epg.112114.eu.org/logo/IPTV经典电影.png",
+                "url": "http://maomao.kandiantv.cn/m3u8.php?/migu/625703337"
             }
         ]
     },
