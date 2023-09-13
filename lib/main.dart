@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:untitled/tv_util.dart';
 import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
+import 'package:uuid/uuid.dart';
 
 import 'widget/tv_widget.dart';
 
@@ -41,6 +42,8 @@ class _HomePage extends State<StatefulWidget> {
   bool hasInit = false;
   bool _showListView = false;
 
+  var uuid = Uuid();
+
   @override
   void initState() {
     super.initState();
@@ -68,12 +71,14 @@ class _HomePage extends State<StatefulWidget> {
 
     _videoPlayerController =
         VideoPlayerController.networkUrl(Uri.parse(currentChannel.url));
+
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
       autoPlay: true,
       looping: false,
       autoInitialize: true,
-      aspectRatio: MediaQuery.of(context).devicePixelRatio,
+      // aspectRatio: MediaQuery.of(context).devicePixelRatio,
+      aspectRatio: 16 / 9.0,
       showControls: false,
     );
   }
@@ -98,18 +103,16 @@ class _HomePage extends State<StatefulWidget> {
             // 透明的组件
             TVWidget(
               key: Key('1'),
-              focusChange: (bool hasFocus) {  },
+              focusChange: (bool hasFocus) {},
               onclick: () {
                 setState(() {
                   _showListView = true;
                 });
               },
-              decoration: const BoxDecoration(
-                color: Colors.transparent
-              ),
-              onup: () {  },
-              ondown: () {  },
-              onback: () {  },
+              decoration: const BoxDecoration(color: Colors.transparent),
+              onup: () {},
+              ondown: () {},
+              onback: () {},
               child: Align(
                 alignment: Alignment.center,
                 child: InkWell(
@@ -121,8 +124,8 @@ class _HomePage extends State<StatefulWidget> {
                     },
                     child: Container(
                       color: Colors.transparent,
-                      width: screenWidth / 3,
-                      height: screenHeight / 3,
+                      width: screenWidth / 2,
+                      height: screenHeight / 2,
                     ),
                   ),
                 ),
@@ -165,7 +168,7 @@ class _HomePage extends State<StatefulWidget> {
                         return Column(
                           children: group.children.map((child) {
                             return TVWidget(
-                                key: Key(child.name),
+                                key: Key(child.url),
                                 focusChange: (bool hasFocus) {
                                   print("focusChange");
                                 },
@@ -179,39 +182,40 @@ class _HomePage extends State<StatefulWidget> {
                                     }
                                   });
                                 },
-                                decoration: const BoxDecoration(
-                                  color: Colors.amber
-                                ),
-                                onup: () {  },
-                                ondown: () {  },
-                                onback: () {  },
+                                decoration:
+                                    const BoxDecoration(color: Colors.amber),
+                                onup: () {},
+                                ondown: () {},
+                                onback: () {},
                                 child: Row(
-                              children: [
-                                const SizedBox(width: 10.0), // 用于添加间距
+                                  children: [
+                                    const SizedBox(width: 10.0), // 用于添加间距
+                                    if (child.logo != "")
+                                      Image.network(
+                                        child.logo,
+                                        width: 50.0, // 图片宽度
+                                        fit: BoxFit.cover, // 图片适应方式
+                                        errorBuilder: (ctx, err, s) {
+                                          return SizedBox(width: 1.0);
+                                        },
+                                      ),
 
-                                    Image.network(
-                                  child.logo,
-                                  width: 50.0, // 图片宽度
-                                  height: 20.0, // 图片高度
-                                  fit: BoxFit.cover, // 图片适应方式
-                                ),
-
-                                Expanded(
-                                    child: ListTile(
-                                  title: Text(
-                                    child.name,
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  onTap: () {
-                                    setState(() {
-                                      changeChannel(child);
-                                    });
-                                  },
-                                ))
-                              ],
-                            ));
+                                    Expanded(
+                                        child: ListTile(
+                                      title: Text(
+                                        child.name,
+                                        style: TextStyle(
+                                            color: currentChannel.url == child.url ? Colors.amber: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      onTap: () {
+                                        setState(() {
+                                          changeChannel(child);
+                                        });
+                                      },
+                                    ))
+                                  ],
+                                ));
                           }).toList(),
                         );
                       },

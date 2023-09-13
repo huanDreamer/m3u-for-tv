@@ -43,8 +43,8 @@ class TVWidgetState extends State<TVWidget> {
   late FocusNode _focusNode;
   bool init = false;
   var default_decoration = BoxDecoration(
-      border: Border.all(width: 3, color: Colors.deepOrange),
-      borderRadius: BorderRadius.all(
+      border: Border.all(width: 3, color: Colors.white38),
+      borderRadius: const BorderRadius.all(
         Radius.circular(5),
       ));
   var decoration = null;
@@ -59,11 +59,7 @@ class TVWidgetState extends State<TVWidget> {
       }
       if (_focusNode.hasFocus) {
         setState(() {
-          if (widget.hasDecoration) {
-            decoration = widget.decoration == null
-                ? default_decoration
-                : widget.decoration;
-          }
+          decoration = default_decoration;
         });
       } else {
         setState(() {
