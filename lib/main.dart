@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:untitled/tv_util.dart';
 import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
 import 'package:uuid/uuid.dart';
-
-import 'widget/tv_widget.dart';
 
 void main() {
   runApp(const TvApp());
@@ -34,13 +33,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<StatefulWidget> {
-  List<ChannelGroup> groups = [];
+  // List<ChannelGroup> groups = [];
+  List<Channel> channels = [];
 
   late ChewieController _chewieController;
   late VideoPlayerController _videoPlayerController;
   late Channel currentChannel;
+  int currentIdx = 0;
+  int focusIdx = 0;
   bool hasInit = false;
   bool _showListView = false;
+
+  final ScrollController _listViewController = ScrollController();
+
+  // 退出
+  DateTime _lastBackPressedTime = DateTime.now();
+  DateTime _lastClick = DateTime.now();
 
   var uuid = Uuid();
 
@@ -53,21 +61,28 @@ class _HomePage extends State<StatefulWidget> {
 
   initData() async {
     var data = await TvUtil.fetchData();
-    setState(() {
-      groups = data;
-      var c = groups[0].children[0];
-
-      if (c.url != "") {
-        changeChannel(c);
-        hasInit = true;
+    for (var i = 0; i < data.length; i++) {
+      for (var j = 0; j < data[i].children.length; j++) {
+        if (data[i].children[j].url != "") {
+          channels.add(data[i].children[j]);
+        }
       }
-    });
+    }
+    if (channels.isNotEmpty) {
+      focusIdx = 0;
+      changeChannel();
+      hasInit = true;
+    }
+
+    setState(() {});
   }
 
-  changeChannel(Channel c) {
-    _showListView = false;
+  changeChannel() {
+    print('--------- channelchange${channels[focusIdx].name}');
 
-    currentChannel = c;
+    _showListView = false;
+    currentChannel = channels[focusIdx];
+    currentIdx = focusIdx;
 
     _videoPlayerController =
         VideoPlayerController.networkUrl(Uri.parse(currentChannel.url));
@@ -83,6 +98,39 @@ class _HomePage extends State<StatefulWidget> {
     );
   }
 
+  focusChange(int add) {
+    focusIdx += add;
+    if (focusIdx < 0) {
+      focusIdx = channels.length - 1;
+    }
+    if (focusIdx >= channels.length) {
+      focusIdx = 0;
+    }
+    _listViewController.animateTo(
+      50.0 * getShowIdx(),
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeInOut, // 滚动的动画曲线
+    );
+  }
+
+  showList(bool show) {
+    if ((show && _showListView) || (!show && !_showListView)) {
+      return;
+    }
+    _showListView = show;
+    if (_showListView) {
+      focusChange(currentIdx - focusIdx);
+    }
+  }
+
+  int getShowIdx() {
+    // print('focus: ${focusIdx}');
+    // if (focusIdx < 4) {
+    //   return 0;
+    // }
+    return focusIdx - 4;
+  }
+
   @override
   Widget build(BuildContext context) {
     // 获取屏幕宽度
@@ -91,35 +139,84 @@ class _HomePage extends State<StatefulWidget> {
     // 获取屏幕高度
     double screenHeight = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      body: Center(
-          child: Container(
-        color: Colors.black,
-        child: Stack(
-          children: [
-            hasInit
-                ? Chewie(controller: _chewieController)
-                : const Text("初始化中"),
-            // 透明的组件
-            TVWidget(
-              key: Key('1'),
-              focusChange: (bool hasFocus) {},
-              onclick: () {
-                setState(() {
-                  _showListView = true;
-                });
-              },
-              decoration: const BoxDecoration(color: Colors.transparent),
-              onup: () {},
-              ondown: () {},
-              onback: () {},
-              child: Align(
-                alignment: Alignment.center,
-                child: InkWell(
+    return RawKeyboardListener(
+      focusNode: FocusNode(),
+      autofocus: true,
+      onKey: (key) {
+        if (DateTime.now().difference(_lastClick) <
+            const Duration(milliseconds: 300)) {
+          print('重复点击');
+          return;
+        }
+        RawKeyEventDataAndroid event = key.data as RawKeyEventDataAndroid;
+        switch (event.keyCode) {
+          case 23:
+          case 66:
+            if (!_showListView) {
+              showList(true);
+            } else {
+              changeChannel();
+            }
+            break;
+          case 20: // 下
+            print("下");
+            if (!_showListView) {
+              showList(true);
+            } else {
+              focusChange(1);
+            }
+            break;
+          case 19: // 上
+            print("上");
+            if (!_showListView) {
+              showList(true);
+            } else {
+              focusChange(-1);
+            }
+            break;
+        }
+        _lastClick = DateTime.now();
+        setState(() {});
+      },
+      child: WillPopScope(
+        onWillPop: () async {
+          if (_showListView) {
+            setState(() {
+              showList(false);
+            });
+            return false;
+          } else {
+            if (DateTime.now().difference(_lastBackPressedTime) >=
+                const Duration(seconds: 2)) {
+              _lastBackPressedTime = DateTime.now();
+              Fluttertoast.showToast(
+                msg: '再按一次退出应用',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 2,
+              );
+              return false;
+            } else {
+              return true;
+            }
+          }
+        },
+        child: Scaffold(
+          body: Center(
+              child: Container(
+            color: Colors.black,
+            child: Stack(
+              children: [
+                hasInit
+                    ? Chewie(controller: _chewieController)
+                    : const Text("初始化中"),
+                // 透明的组件
+                Align(
+                  alignment: Alignment.center,
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
-                        _showListView = true;
+                        showList(true);
                       });
                     },
                     child: Container(
@@ -129,100 +226,92 @@ class _HomePage extends State<StatefulWidget> {
                     ),
                   ),
                 ),
-              ),
-            ),
-            // 遮罩
-            if (_showListView)
-              Align(
-                alignment: Alignment.center,
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _showListView = false;
-                    });
-                  },
-                  child: AnimatedOpacity(
-                    opacity: _showListView ? 0.5 : 0.0, // 控制遮罩的透明度
-                    duration: const Duration(milliseconds: 500), // 动画持续时间
-                    child: Container(
-                      color: Colors.white, // 遮罩颜色
+                // 遮罩
+                if (_showListView)
+                  Align(
+                    alignment: Alignment.center,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          showList(false);
+                        });
+                      },
+                      child: AnimatedOpacity(
+                        opacity: _showListView ? 0.5 : 0.0,
+                        // 控制遮罩的透明度
+                        duration: const Duration(milliseconds: 500),
+                        // 动画持续时间
+                        child: Container(
+                          color: Colors.white, // 遮罩颜色
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            AnimatedPositioned(
-                duration: const Duration(milliseconds: 250),
-                // 动画持续时间
-                left: _showListView ? 0 : -200,
-                // 控制ListView的位置
-                top: 0,
-                bottom: 0,
-                width: 200,
-                // 控制ListView的宽度
-                child: Container(
-                    color: Colors.black.withOpacity(0.4), // ListView背景颜色
-                    child: ListView.builder(
-                      itemCount: groups.length,
-                      itemBuilder: (context, index) {
-                        final group = groups[index];
-                        return Column(
-                          children: group.children.map((child) {
-                            return TVWidget(
-                                key: Key(child.url),
-                                focusChange: (bool hasFocus) {
-                                  print("focusChange");
-                                },
-                                onclick: () {
-                                  print("click");
-                                  setState(() {
-                                    if (!_showListView) {
-                                      _showListView = true;
-                                    } else {
-                                      changeChannel(child);
-                                    }
-                                  });
-                                },
-                                decoration:
-                                    const BoxDecoration(color: Colors.amber),
-                                onup: () {},
-                                ondown: () {},
-                                onback: () {},
-                                child: Row(
-                                  children: [
-                                    const SizedBox(width: 10.0), // 用于添加间距
-                                    if (child.logo != "")
-                                      Image.network(
-                                        child.logo,
-                                        width: 50.0, // 图片宽度
-                                        fit: BoxFit.cover, // 图片适应方式
-                                        errorBuilder: (ctx, err, s) {
-                                          return SizedBox(width: 1.0);
-                                        },
-                                      ),
-
-                                    Expanded(
-                                        child: ListTile(
-                                      title: Text(
-                                        child.name,
-                                        style: TextStyle(
-                                            color: currentChannel.url == child.url ? Colors.amber: Colors.white,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      onTap: () {
-                                        setState(() {
-                                          changeChannel(child);
-                                        });
+                AnimatedPositioned(
+                    duration: const Duration(milliseconds: 250),
+                    // 动画持续时间
+                    left: _showListView ? 0 : -200,
+                    // 控制ListView的位置
+                    top: 0,
+                    bottom: 0,
+                    width: 200,
+                    // 控制ListView的宽度
+                    child: Container(
+                        color: Colors.black.withOpacity(0.4),
+                        // ListView背景颜色
+                        child: ListView.builder(
+                            itemCount: channels.length,
+                            itemExtent: 50.0,
+                            controller: _listViewController,
+                            itemBuilder: (context, index) {
+                              final child = channels[index];
+                              return Row(
+                                children: [
+                                  const SizedBox(width: 10.0), // 用于添加间距
+                                  if (child.logo != "")
+                                    Image.network(
+                                      child.logo,
+                                      width: 50.0, // 图片宽度
+                                      fit: BoxFit.cover, // 图片适应方式
+                                      errorBuilder: (ctx, err, s) {
+                                        return SizedBox(width: 1.0);
                                       },
-                                    ))
-                                  ],
-                                ));
-                          }).toList(),
-                        );
-                      },
-                    )))
-          ],
+                                    ),
+
+                                  Expanded(
+                                      child: ListTile(
+                                    title: Text(
+                                      child.name,
+                                      style: TextStyle(
+                                          color:
+                                              currentChannel.url == child.url ||
+                                                      focusIdx == index
+                                                  ? Colors.amber
+                                                  : Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    onTap: () {
+                                      focusIdx = index;
+                                      changeChannel();
+                                      setState(() {});
+                                    },
+                                  ))
+                                ],
+                              );
+                            })))
+              ],
+            ),
+          )),
         ),
-      )),
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    // 在页面销毁时释放资源
+    _videoPlayerController.dispose();
+    _chewieController.dispose();
+    super.dispose();
   }
 }

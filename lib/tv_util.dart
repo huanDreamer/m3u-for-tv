@@ -1,3 +1,5 @@
+
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -15,7 +17,13 @@ class TvUtil {
         return group;
       }).toList();
     } else {
-      throw Exception('Failed to load data');
+      Fluttertoast.showToast(
+        msg: '请求频道列表错误',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+      );
+      return <ChannelGroup>[];
     }
   }
 }
