@@ -1,4 +1,3 @@
-
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -6,16 +5,14 @@ import 'dart:convert';
 class TvUtil {
   static const url = "https://tv.huandreamer.top/";
 
-  static Future<List<ChannelGroup>> fetchData() async {
+  static Future<ChannelResponse> fetchData() async {
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body) as List<dynamic>;
+      final jsonData = json.decode(response.body) as dynamic;
 
-      return jsonData.map((groupData) {
-        final group = ChannelGroup.fromJson(groupData);
-        return group;
-      }).toList();
+      final group = ChannelResponse.fromJson(jsonData);
+      return group;
     } else {
       Fluttertoast.showToast(
         msg: '请求频道列表错误',
@@ -23,24 +20,30 @@ class TvUtil {
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 2,
       );
-      return <ChannelGroup>[];
+      return ChannelResponse(children: []);
     }
   }
 }
 
-class ChannelGroup {
-  final String group;
+class ChannelResponse {
+  final String version;
+  final String url;
   final List<Channel> children;
 
-  ChannelGroup({required this.group, required this.children});
+  ChannelResponse({
+    this.version = "",
+    this.url = "",
+    required this.children,
+  });
 
-  factory ChannelGroup.fromJson(Map<String, dynamic> json) {
-    final group = json['group'] as String;
+  factory ChannelResponse.fromJson(Map<String, dynamic> json) {
+    final version = json['version'] as String;
+    final url = json['url'] as String;
     final children = (json['children'] as List<dynamic>)
         .map((childData) => Channel.fromJson(childData))
         .toList();
 
-    return ChannelGroup(group: group, children: children);
+    return ChannelResponse(version: version, url: url, children: children);
   }
 }
 

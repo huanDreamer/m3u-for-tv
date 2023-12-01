@@ -1,21 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:untitled/tv_util.dart';
+import 'package:tv/tv_util.dart';
 import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
 import 'package:uuid/uuid.dart';
+import 'package:wakelock/wakelock.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 
 void main() {
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+
+  Wakelock.enable();
+
+  // 初始化 flutter_downloader
+  WidgetsFlutterBinding.ensureInitialized();
+  FlutterDownloader.initialize(
+      debug: true // 是否为调试模式
+  );
+
   runApp(const TvApp());
 }
+
+String appVersion = "1.0";
 
 class TvApp extends StatelessWidget {
   const TvApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 
     return const MaterialApp(
       home: HomePage(),
@@ -33,7 +46,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<StatefulWidget> {
-  // List<ChannelGroup> groups = [];
   List<Channel> channels = [];
 
   late ChewieController _chewieController;
@@ -61,13 +73,13 @@ class _HomePage extends State<StatefulWidget> {
 
   initData() async {
     var data = await TvUtil.fetchData();
-    for (var i = 0; i < data.length; i++) {
-      for (var j = 0; j < data[i].children.length; j++) {
-        if (data[i].children[j].url != "") {
-          channels.add(data[i].children[j]);
-        }
-      }
+
+    // 升级
+    if (data.version != appVersion && data.url != "") {
+      await doUpdate(data.url);
     }
+
+    channels = data.children;
     if (channels.isNotEmpty) {
       focusIdx = 0;
       changeChannel();
@@ -75,6 +87,30 @@ class _HomePage extends State<StatefulWidget> {
     }
 
     setState(() {});
+  }
+
+  // app升级
+  doUpdate(String url) async {
+
+    url = "https://r2.huandreamer.top/tv.apk";
+
+    await FlutterDownloader.enqueue(
+      url: url,
+      savedDir: '/storage/emulated/0/Download/',
+      showNotification: true,
+      saveInPublicStorage: true,
+      openFileFromNotification: true,
+      requiresStorageNotLow: true, // 确保只在存储空间充足时才会下载
+    );
+
+
+    Fluttertoast.showToast(
+      msg: '发现新版本正在升级',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 2,
+    );
+
   }
 
   changeChannel() {
