@@ -115,6 +115,10 @@ class _HomePage extends State<StatefulWidget> {
   }
 
   changeChannel() {
+
+    if (channels.isEmpty) {
+      return;
+    }
     print('--------- channelchange${channels[focusIdx].name}');
 
     _showListView = false;
