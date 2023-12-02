@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:install_plugin/install_plugin.dart';
+import 'package:tv/tv_toast.dart';
 import 'package:tv/tv_util.dart';
 import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
 import 'package:uuid/uuid.dart';
 import 'package:wakelock/wakelock.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 void main() {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
@@ -15,9 +19,6 @@ void main() {
 
   // 初始化 flutter_downloader
   WidgetsFlutterBinding.ensureInitialized();
-  FlutterDownloader.initialize(
-      debug: true // 是否为调试模式
-  );
 
   runApp(const TvApp());
 }
@@ -29,7 +30,6 @@ class TvApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return const MaterialApp(
       home: HomePage(),
     );
@@ -76,7 +76,7 @@ class _HomePage extends State<StatefulWidget> {
 
     // 升级
     if (data.version != appVersion && data.url != "") {
-      await doUpdate(data.url);
+      doUpdate(data.url);
     }
 
     channels = data.children;
@@ -84,6 +84,8 @@ class _HomePage extends State<StatefulWidget> {
       focusIdx = 0;
       changeChannel();
       hasInit = true;
+    } else {
+      TvToast.show("频道获取失败");
     }
 
     setState(() {});
@@ -91,26 +93,25 @@ class _HomePage extends State<StatefulWidget> {
 
   // app升级
   doUpdate(String url) async {
+    TvToast.show("发现新版本,正在升级");
 
-    url = "https://r2.huandreamer.top/tv.apk";
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final Directory tempDir = await getTemporaryDirectory();
+        final String tempPath = tempDir.path;
 
-    await FlutterDownloader.enqueue(
-      url: url,
-      savedDir: '/storage/emulated/0/Download/',
-      showNotification: true,
-      saveInPublicStorage: true,
-      openFileFromNotification: true,
-      requiresStorageNotLow: true, // 确保只在存储空间充足时才会下载
-    );
+        File file = File('$tempPath/tv.apk'); // 替换为你的文件名和扩展名
+        await file.writeAsBytes(response.bodyBytes);
+        print('File downloaded to temporary directory: ${file.path}');
 
-
-    Fluttertoast.showToast(
-      msg: '发现新版本正在升级',
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 2,
-    );
-
+        InstallPlugin.installApk(file.path);
+      } else {
+        TvToast.show("下载失败");
+      }
+    } catch (e) {
+      TvToast.show('安装失败:$e');
+    }
   }
 
   changeChannel() {
@@ -160,10 +161,6 @@ class _HomePage extends State<StatefulWidget> {
   }
 
   int getShowIdx() {
-    // print('focus: ${focusIdx}');
-    // if (focusIdx < 4) {
-    //   return 0;
-    // }
     return focusIdx - 4;
   }
 
@@ -225,12 +222,7 @@ class _HomePage extends State<StatefulWidget> {
             if (DateTime.now().difference(_lastBackPressedTime) >=
                 const Duration(seconds: 2)) {
               _lastBackPressedTime = DateTime.now();
-              Fluttertoast.showToast(
-                msg: '再按一次退出应用',
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 2,
-              );
+              TvToast.show("再按一次退出应用");
               return false;
             } else {
               return true;
