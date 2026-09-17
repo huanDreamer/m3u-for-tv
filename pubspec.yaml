@@ -54,6 +54,10 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
 
+  # 测试里通过 VideoPlayerPlatform.instance 注入假实现来驱动真实播放路径，
+  # 需要显式声明这个传递依赖（否则触发 depend_on_referenced_packages）。
+  video_player_platform_interface: ^6.2.0
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -67,7 +71,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-   - images/logo.png
+    - images/logo.png
+    # 内置频道列表：不再请求 https://tv.huandreamer.top/，离线也能启动。
+    - assets/tv.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

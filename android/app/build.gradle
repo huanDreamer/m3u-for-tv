@@ -24,7 +24,9 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.untitled"
-    compileSdkVersion flutter.compileSdkVersion
+    // 显式指定 34：video_player_android 2.x 要求 compileSdk 34，
+    // 而 Flutter 3.13 的默认值是 33，不指定会构建告警且后续可能直接失败。
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -65,6 +67,6 @@ flutter {
     source '../..'
 }
 
-dependencies {
-    implementation 'com.android.support:multidex:1.0.3'
-}
+// 不再依赖旧的 com.android.support:multidex：
+// minSdk 已是 21+，multidex 由系统原生支持（defaultConfig 里的 multiDexEnabled 足够），
+// 引入 support 库反而会与 androidx 混用导致构建失败。
